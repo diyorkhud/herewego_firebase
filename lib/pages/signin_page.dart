@@ -29,12 +29,12 @@ class _SignInPageState extends State<SignInPage> {
         isLoading = true;
       });
       return AuthService.signInUser(context, email, password).then((firebaseUser) => {
-        _getFirebaseUser(firebaseUser!),
+        _getFirebaseUser(firebaseUser),
       });
     }
   }
 
-  _getFirebaseUser(User firebaseUser){
+  _getFirebaseUser(User? firebaseUser){
     setState((){
       isLoading = true;
     });
@@ -64,6 +64,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 const SizedBox(height: 10,),
                 TextField(
+                  obscureText: true,
                   controller: passwordController,
                   decoration: const InputDecoration(
                       hintText: "Password"

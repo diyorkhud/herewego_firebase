@@ -73,6 +73,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 const SizedBox(height: 10,),
                 TextField(
+                  obscureText: true,
                   controller: passwordController,
                   decoration: const InputDecoration(
                       hintText: "Password"

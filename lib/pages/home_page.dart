@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Post>items=[];
+  var isLoading = false;
 
   @override
   void initState() {
@@ -35,6 +36,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   _apiGetPosts() async{
+    setState((){
+      isLoading = false;
+    });
     var id = await Prefs.loadUserId();
     RTDBService.getPosts(id!).then((posts) => {
       _resPosts(posts),
@@ -43,6 +47,7 @@ class _HomePageState extends State<HomePage> {
 
   _resPosts(List<Post> posts){
     setState((){
+      isLoading = false;
       items = posts;
     });
   }
@@ -62,11 +67,18 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (ctx, i){
-          return itemOfList(items[i]);
-        },
+      body: Stack(
+          children:[
+            ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (ctx, i){
+                return itemOfList(items[i]);
+              },
+            ),
+            isLoading ? const Center(
+              child: CircularProgressIndicator(),
+            ): SizedBox.shrink(),
+          ]
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _openDetail,
@@ -81,6 +93,15 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Container(
+            padding: EdgeInsets.all(5),
+            height: 200,
+            width: double.infinity,
+            child: post.img_url != null ?
+            Image.network(post.img_url!,fit: BoxFit.cover,):
+            Image.asset("assets/images/default.png",),
+          ),
+          const SizedBox(width: 15,),
           Text("${post.firstName} ${post.lastName}", style: const TextStyle(color: Colors.black, fontSize: 20),),
           const SizedBox(height: 10,),
           Text(post.date, style: const TextStyle(color: Colors.black, fontSize: 16),),

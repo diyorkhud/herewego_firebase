@@ -21,7 +21,7 @@ class RTDBService{
       final v = snapshot.snapshot.children;
       for(var i in v){
         Map map = i.value as Map;
-        items.add(Post(map['userId'],map['firstName'],map['lastName'],map['content'],map['date']));
+        items.add(Post(map['userId'],map['firstName'],map['lastName'],map['content'],map['date'],map['img_url']));
       }
     });
     return items;
